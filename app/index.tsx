@@ -1,7 +1,7 @@
 import { Button } from "@react-navigation/elements";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import Animated, { cubicBezier, Keyframe } from "react-native-reanimated";
+import Animated, { cubicBezier } from "react-native-reanimated";
 
 const fadein = {
   0: {
@@ -22,7 +22,7 @@ function text(text: string, inverted: boolean) {
       backdropFilter: 'blur(20px) saturate(160%)'
     }]}>
       {text.split("").map((char, i) => (
-        <Animated.Text style={[styles.letter, { "--i": i } as any]} key={i}>
+        <Animated.Text style={[styles.letter, { animationDelay: `${0.03 * i}s` }]} key={i}>
           {char === " " ? "\u00A0" : char}
         </Animated.Text>
       ))}
@@ -59,10 +59,9 @@ const styles = StyleSheet.create({
   },
 
   letter: {
-    transform: "translateY(100%)",
-    animationDelay: "1.3s",
+    transform: [{ translateY: "100%" }],
     animationName: fadein,
-    animationDuration: "0.5s",
+    animationDuration: "1.3s",
     animationFillMode: "forwards",
     animationTimingFunction: cubicBezier(0.19, 1, 0.22, 1) as any,
   },
