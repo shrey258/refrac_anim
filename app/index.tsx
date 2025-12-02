@@ -1,3 +1,5 @@
+import MaskedView from "@react-native-masked-view/masked-view";
+import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { cubicBezier } from "react-native-reanimated";
@@ -14,12 +16,16 @@ const fadein = {
 };
 
 function text(text: string, inverted: boolean) {
-  return (
+  const content = (
     <View
       style={[
         styles.h1,
         inverted && {
-          transform: [{ rotate: "180deg" }, { rotateY: "180deg" }],
+          transform: [
+            { rotate: "180deg" },
+            { rotateY: "180deg" },
+            { skewX: "12deg" },
+          ],
           opacity: 0.3,
           backdropFilter: "blur(20px) saturate(160%)",
         },
@@ -35,6 +41,26 @@ function text(text: string, inverted: boolean) {
       ))}
     </View>
   );
+
+  if (inverted) {
+    return (
+      <MaskedView
+        maskElement={
+          <LinearGradient
+            colors={["black", "transparent"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{ width: "100%", height: "100%" }}
+          />
+        }
+        style={{ width: "100%" }}
+      >
+        {content}
+      </MaskedView>
+    );
+  }
+
+  return content;
 }
 
 export default function Index() {
